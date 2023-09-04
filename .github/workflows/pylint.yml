@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python
       uses: actions/setup-python@v3
       with:
         python-version: "3.11"
@@ -16,6 +16,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install black pylint
-    - name: Analysing the code with pylint
+    - name: Run Pylint
+      id: pylint-check
       run: |
         pylint *.py
+    - name: Create an issue
+      if: steps.pylint-check.outputs
+      uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
