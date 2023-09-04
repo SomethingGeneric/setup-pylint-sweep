@@ -18,6 +18,7 @@ jobs:
         pip install black pylint
     - name: Run Pylint
       id: pylint-check
+      continue-on-error: true
       run: |
         pylint *.py
     - name: Create an issue
